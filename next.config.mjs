@@ -12,9 +12,6 @@ const nextConfig = {
     domains: ['placeholder.svg'],
     unoptimized: true,
   },
-  experimental: {
-    appDir: true,
-  },
 };
 
 const pwaConfig = withPWA({

@@ -1,16 +1,16 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/hooks/use-auth"
 import { LanguageProvider } from "@/contexts/language-context"
 
-const geistSans = Geist({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-geist-sans",
 })
 
-const geistMono = Geist_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
 })
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     icon: "/3d-educational-mascot-icon-purple-gradient.jpg",
     apple: "/3d-educational-mascot-icon-purple-gradient.jpg",
   },
-    generator: 'v0.app'
+  generator: "v0.app",
 }
 
 export const viewport: Viewport = {
@@ -49,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
       <head>
         <meta name="theme-color" content="#6366f1" />
         <link rel="manifest" href="/manifest.json" />
