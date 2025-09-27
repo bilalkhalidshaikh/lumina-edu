@@ -1,0 +1,45 @@
+{
+  "name": "Lumina - EdTech Analytics Platform",
+  "short_name": "Lumina",
+  "description": "AI-powered educational analytics platform for teachers and parents",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f23",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/placeholder.svg?height=192&width=192",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/placeholder.svg?height=512&width=512",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View student analytics dashboard",
+      "url": "/dashboard",
+      "icons": [{ "src": "/placeholder.svg?height=96&width=96", "sizes": "96x96" }]
+    },
+    {
+      "name": "Students",
+      "short_name": "Students",
+      "description": "Manage student data",
+      "url": "/students",
+      "icons": [{ "src": "/placeholder.svg?height=96&width=96", "sizes": "96x96" }]
+    }
+  ]
+}
