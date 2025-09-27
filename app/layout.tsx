@@ -7,12 +7,12 @@ import { LanguageProvider } from "@/contexts/language-context"
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-inter", // Updated variable name to match Inter font
 })
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
+  variable: "--font-jetbrains-mono", // Updated variable name to match JetBrains Mono font
 })
 
 export const metadata: Metadata = {

@@ -5,8 +5,9 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Updated font variables to match Inter and JetBrains Mono */
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 
   /* Lumina EdTech Color System - Inspired by design brief */
   --background: 240 10% 3.9%;
