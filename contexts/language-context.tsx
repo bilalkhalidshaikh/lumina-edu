@@ -120,22 +120,31 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>("en")
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("lumina-language") as Language
-    if (savedLanguage && (savedLanguage === "en" || savedLanguage === "ur")) {
-      setLanguage(savedLanguage)
-      // Set document direction for RTL support
-      document.documentElement.dir = savedLanguage === "ur" ? "rtl" : "ltr"
-      document.documentElement.lang = savedLanguage
-    }
+    setIsClient(true)
   }, [])
+
+  useEffect(() => {
+    if (isClient && typeof window !== "undefined") {
+      const savedLanguage = localStorage.getItem("lumina-language") as Language
+      if (savedLanguage && (savedLanguage === "en" || savedLanguage === "ur")) {
+        setLanguage(savedLanguage)
+        // Set document direction for RTL support
+        document.documentElement.dir = savedLanguage === "ur" ? "rtl" : "ltr"
+        document.documentElement.lang = savedLanguage
+      }
+    }
+  }, [isClient])
 
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang)
-    localStorage.setItem("lumina-language", lang)
-    document.documentElement.dir = lang === "ur" ? "rtl" : "ltr"
-    document.documentElement.lang = lang
+    if (typeof window !== "undefined") {
+      localStorage.setItem("lumina-language", lang)
+      document.documentElement.dir = lang === "ur" ? "rtl" : "ltr"
+      document.documentElement.lang = lang
+    }
   }
 
   const t = (key: string): string => {
