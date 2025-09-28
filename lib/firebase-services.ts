@@ -17,7 +17,7 @@ import {
   addDoc,
   serverTimestamp,
 } from "firebase/firestore"
-import { auth, db } from "./firebase-config"
+import { getFirebaseAuth, getFirebaseDb } from "./firebase-config"
 
 export interface UserProfile {
   id: string
@@ -49,6 +49,11 @@ export interface StudentData {
 export class FirebaseAuthService {
   async signIn(email: string, password: string) {
     try {
+      const auth = getFirebaseAuth()
+      if (!auth) {
+        throw new Error("Firebase auth not available")
+      }
+
       console.log("[v0] Attempting to sign in with email:", email)
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       console.log("[v0] Sign in successful for user:", userCredential.user.uid)
@@ -75,6 +80,12 @@ export class FirebaseAuthService {
 
   async signUp(email: string, password: string, name: string, role: "teacher" | "parent" | "admin" = "teacher") {
     try {
+      const auth = getFirebaseAuth()
+      const db = getFirebaseDb()
+      if (!auth || !db) {
+        throw new Error("Firebase services not available")
+      }
+
       console.log("[v0] Attempting to create user with email:", email)
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       console.log("[v0] User created successfully:", userCredential.user.uid)
@@ -109,6 +120,11 @@ export class FirebaseAuthService {
 
   async signOut() {
     try {
+      const auth = getFirebaseAuth()
+      if (!auth) {
+        throw new Error("Firebase auth not available")
+      }
+
       await firebaseSignOut(auth)
       return { success: true, message: "Successfully signed out" }
     } catch (error: any) {
@@ -118,11 +134,22 @@ export class FirebaseAuthService {
   }
 
   onAuthStateChange(callback: (user: User | null) => void) {
+    const auth = getFirebaseAuth()
+    if (!auth) {
+      console.warn("Firebase auth not available for state change listener")
+      return () => {} // Return empty unsubscribe function
+    }
+
     return onAuthStateChanged(auth, callback)
   }
 
   async getUserProfile(userId: string): Promise<UserProfile | null> {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       const docRef = doc(db, "users", userId)
       const docSnap = await getDoc(docRef)
 
@@ -138,6 +165,11 @@ export class FirebaseAuthService {
 
   async updateUserProfile(userId: string, updates: Partial<UserProfile>) {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       const docRef = doc(db, "users", userId)
       await updateDoc(docRef, updates)
       return { success: true }
@@ -173,6 +205,11 @@ export class FirebaseAuthService {
 export class FirebaseDataService {
   async saveStudentData(studentData: Omit<StudentData, "id" | "createdAt" | "updatedAt">) {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       const docRef = await addDoc(collection(db, "students"), {
         ...studentData,
         createdAt: serverTimestamp(),
@@ -188,6 +225,11 @@ export class FirebaseDataService {
 
   async updateStudentData(studentId: string, updates: Partial<StudentData>) {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       const docRef = doc(db, "students", studentId)
       await updateDoc(docRef, {
         ...updates,
@@ -203,6 +245,11 @@ export class FirebaseDataService {
 
   async getStudentData(studentId: string): Promise<StudentData | null> {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       const docRef = doc(db, "students", studentId)
       const docSnap = await getDoc(docRef)
 
@@ -218,6 +265,11 @@ export class FirebaseDataService {
 
   async getStudentsByTeacher(teacherId: string): Promise<StudentData[]> {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       const q = query(collection(db, "students"), where("teacherIds", "array-contains", teacherId))
       const querySnapshot = await getDocs(q)
 
@@ -233,6 +285,11 @@ export class FirebaseDataService {
 
   async getStudentsByParent(parentId: string): Promise<StudentData[]> {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       const q = query(collection(db, "students"), where("parentIds", "array-contains", parentId))
       const querySnapshot = await getDocs(q)
 
@@ -248,6 +305,11 @@ export class FirebaseDataService {
 
   async saveAIInsight(studentId: string, insight: any) {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       await addDoc(collection(db, "ai-insights"), {
         studentId,
         insight,
@@ -263,6 +325,11 @@ export class FirebaseDataService {
 
   async savePrediction(studentId: string, prediction: any) {
     try {
+      const db = getFirebaseDb()
+      if (!db) {
+        throw new Error("Firebase db not available")
+      }
+
       await addDoc(collection(db, "predictions"), {
         studentId,
         prediction,
